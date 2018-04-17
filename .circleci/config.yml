@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/sunshinejr/danger-xiblint
+    parallelism: 1
+    shell: /bin/bash --login
+    environment:
+      LANG: en_US.UTF-8
+    macos:
+      xcode: '9.2.0' # danger-swift doesn't work on 9.3, _yet_
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-build-{{ .Branch }}-
+      - run:
+          name: Install xiblint
+          command: brew install xiblint
+      - run: 
+          name: Update SPM
+          command: swift update package
+      - save_cache:
+          key: v1-build-{{ .Branch }}-{{ epoch }}
+          paths:
+            - .build
+      - run: 
+          name: swift build
+          command: swift build
+      - run: 
+          name: swift test
+          command: swift test
