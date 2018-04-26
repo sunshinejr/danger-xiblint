@@ -50,7 +50,7 @@ internal extension Xiblint {
         let xibFiles = files.filter { $0.hasSuffix(".xib") || $0.hasSuffix(".storyboard") }
 
         do {
-            let xiblintViolations = try violations(for: xibFiles)
+            let xiblintViolations = try violations(for: xibFiles, shellExecutor: shellExecutor)
 
             if !xiblintViolations.isEmpty {
                 if inline {
@@ -70,7 +70,7 @@ internal extension Xiblint {
         }
     }
 
-    private static func violations(for files: [FilePath]) throws -> [Violation] {
+    private static func violations(for files: [FilePath], shellExecutor: ShellExecutor) throws -> [Violation] {
         // Currently we are ignoring files, because there is no option to specify them on the fly
         // but let's keep the parameter so I can add --path option to xiblint later on ;-)
         let decoder = JSONDecoder()
