@@ -1,0 +1,12 @@
+{
+    "rules": [
+      "accessibility_format",
+      "autolayout_frames",
+      "simulated_metrics_retina4_0"
+    ],
+    "paths": {
+      "Pods": {
+        "rules": []
+      }
+    }
+  }

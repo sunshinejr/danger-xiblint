@@ -7,7 +7,7 @@ jobs:
     environment:
       LANG: en_US.UTF-8
     macos:
-      xcode: '9.2.0' # danger-swift doesn't work on 9.3, _yet_
+      xcode: '9.3.0'
     steps:
       - checkout
       - restore_cache:
@@ -15,7 +15,7 @@ jobs:
             - v1-build-{{ .Branch }}-
       - run:
           name: Install xiblint
-          command: brew install xiblint
+          command: pip install git+https://github.com/lyft/xiblint.git
       - run: 
           name: Update SPM
           command: swift update package
