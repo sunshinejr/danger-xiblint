@@ -16,9 +16,6 @@ jobs:
       - run:
           name: Install xiblint
           command: pip install git+https://github.com/lyft/xiblint.git
-      - run: 
-          name: Update SPM
-          command: swift update package
       - save_cache:
           key: v1-build-{{ .Branch }}-{{ epoch }}
           paths:
