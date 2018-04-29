@@ -3,12 +3,12 @@ import Danger
 import Foundation
 @testable import DangerXiblint
 
-class DangerXiblintTests: XCTestCase {
+// Current workaround for testing purposes.
+// Change to your path and uncomment when you are testing locally using Xcode.
+let localPath = "" // "/Users/lukaszmroz/Projects/OtherProjects/Libraries/DangerXiblint/"
 
-    // Current workaround for testing purposes.
-    // Change to your path and uncomment when you are testing locally using Xcode.
-//    let localPath = "/Users/lukaszmroz/Projects/OtherProjects/Libraries/DangerXiblint"
-    let localPath = ""
+class DangerXiblintTests: XCTestCase {
+    
     var executor: FakeShellExecutor!
     var danger: DangerDSL!
     var markdownMessage: String?
