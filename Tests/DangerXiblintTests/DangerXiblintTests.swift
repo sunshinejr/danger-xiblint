@@ -3,9 +3,10 @@ import Danger
 import Foundation
 @testable import DangerXiblint
 
-// Current workaround for testing purposes.
-// Change to your path and uncomment when you are testing locally using Xcode.
-let localPath = "" // "/Users/lukaszmroz/Projects/OtherProjects/Libraries/DangerXiblint/"
+// Workaround for getting the URL for the project root.
+let localPath = URL(string: #file)!
+    .deletingLastPathComponent(2)
+    .absoluteString
 
 class DangerXiblintTests: XCTestCase {
     

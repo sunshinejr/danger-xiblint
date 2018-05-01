@@ -45,7 +45,7 @@ internal extension Xiblint {
         warnInlineAction: (String, String, Int) -> Void = warn) -> [Violation] {
 
         // Gathers modified+created files, invokes Xiblint on each, and posts collected errors+warnings to Danger.
-        var files = danger.git.createdFiles + danger.git.modifiedFiles
+        let files = danger.git.createdFiles + danger.git.modifiedFiles
         let xibFiles = files.filter { $0.hasSuffix(".xib") || $0.hasSuffix(".storyboard") }
 
         do {
