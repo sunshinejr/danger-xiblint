@@ -45,7 +45,6 @@ internal extension Xiblint {
         warnInlineAction: (String, String, Int) -> Void = warn) -> [Violation] {
 
         // Gathers modified+created files, invokes Xiblint on each, and posts collected errors+warnings to Danger.
-        // Currently it's not working for the paths, but we're working on it (TM).
         var files = danger.git.createdFiles + danger.git.modifiedFiles
         let xibFiles = files.filter { $0.hasSuffix(".xib") || $0.hasSuffix(".storyboard") }
 
@@ -71,10 +70,11 @@ internal extension Xiblint {
     }
 
     private static func violations(for files: [FilePath], shellExecutor: ShellExecutor) throws -> [Violation] {
-        // Currently we are ignoring files, because there is no option to specify them on the fly
-        // but let's keep the parameter so I can add --path option to xiblint later on ;-)
+        guard files.isNotEmpty else { return [] }
+
         let decoder = JSONDecoder()
-        let outputJSON = shellExecutor.execute("xiblint", arguments: ["--reporter json"])
+        let arguments = files.map { "\"\($0)\"" }.inserted("--reporter json", at: 0)
+        let outputJSON = shellExecutor.execute("xiblint", arguments: arguments)
         do {
             return try decoder.decode([Violation].self, from: outputJSON.data(using: .utf8)!)
         } catch let error {
@@ -84,10 +84,10 @@ internal extension Xiblint {
 
     private static func report(violations: [Violation], action: (String) -> Void) {
         var markdownMessage = """
-                ### Xiblint found issues
-                | File | Reason |
-                | ---- | ------ |\n
-                """
+### Xiblint found issues
+| File | Reason |
+| ---- | ------ |\n
+"""
         markdownMessage += violations.map { $0.toMarkdown() }.joined(separator: "\n")
         action(markdownMessage)
     }
