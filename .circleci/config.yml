@@ -1,7 +1,6 @@
-version: 2
 jobs:
   build:
-    working_directory: ~/sunshinejr/danger-xiblint
+    working_directory: ~/sunshinejr/danger-swiftlint
     parallelism: 1
     shell: /bin/bash --login
     environment:
@@ -14,21 +13,18 @@ jobs:
           keys:
             - v1-build-{{ .Branch }}-
       - run:
-          name: Install xiblint
-          command: pip install git+https://github.com/lyft/xiblint.git
+          name: swift package update
+          command: swift package update
+      - run:
+          name: swift build
+          command: swift build
+      - run:
+          name: swift test
+          command: swift test
       - save_cache:
           key: v1-build-{{ .Branch }}-{{ epoch }}
           paths:
             - .build
-      - run: 
-          name: swift build
-          command: swift build
-      - run: 
-          name: swift test
-          command: swift test
-      # Collect XML test results data to show in the UI,
-      # and save the same XML files under test-results folder
-      # in the Artifacts tab
       - store_test_results:
           path: test_output/report.xml
       - store_artifacts:
@@ -36,4 +32,4 @@ jobs:
           destination: scan-test-results
       - store_artifacts:
           path: ~/Library/Logs/scan
-          destination: scan-logs          
+          destination: scan-logs
